@@ -1,0 +1,6 @@
+name = Context Takeover
+description = Adds a configurable takeover banner
+dependencies[] = context
+package = custom
+core = 7.x
+files[] = context_takeover_reaction.inc

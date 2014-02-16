@@ -1,0 +1,82 @@
+<?php
+
+/**
+ * @file context_takeover.module
+ * TODO: Enter file description here.
+ */
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function context_takeover_ctools_plugin_api($module, $api) {
+  if ($module == 'context' && $api == 'plugins') {
+    return array('version' => 3);
+  }
+}
+
+/**
+ * Implements hook_context_plugins().
+ */
+function context_takeover_context_plugins() {
+  $plugins['context_takeover_reaction'] = array(
+    'handler' => array(
+      'path' => drupal_get_path('module', 'context_takeover'),
+      'file' => 'context_takeover_reaction.inc',
+      'class' => 'context_takeover_reaction',
+      'parent' => 'context_reaction',
+    ),
+  );
+  return $plugins;
+}
+
+/**
+ * Implements hook_context_registry().
+ */
+function context_takeover_context_registry() {
+  $registry['reactions'] = array(
+    'context_takeover' => array(
+      'title' => t('Takeover overlay'),
+      'plugin' => 'context_takeover_reaction',
+    ),
+  );
+  return $registry;
+}
+
+/**
+ * Implements hook_context_page_reaction().
+ */
+function context_takeover_context_page_reaction() {
+  if ($plugin = context_get_plugin('reaction', 'context_takeover')) {
+    $plugin->execute();
+  }
+}
+
+/**
+ * Implements hook_library().
+ */
+function context_takeover_library() {
+  $module_path = drupal_get_path('module', 'context_takeover');
+  $libraries['takeover'] = array(
+    'title' => 'takeover',
+    'website' => 'http://github.com/generoi',
+    'version' => '0.1',
+    'js' => array(
+      $module_path . '/takeover.js' => array(),
+    ),
+    'dependencies' => array(
+      array('system', 'jquery.cookie'),
+    ),
+  );
+  return $libraries;
+}
+
+function context_takeover($content, $id) {
+  drupal_add_library('context_takeover', 'takeover');
+  drupal_add_js(array(
+    'takeover' => array(
+      'content' => t($content),
+      'id' => $id,
+      'burst' => FALSE,
+    ),
+  ), 'setting');
+}
