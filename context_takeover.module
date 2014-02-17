@@ -63,6 +63,9 @@ function context_takeover_library() {
     'js' => array(
       $module_path . '/takeover.js' => array(),
     ),
+    'css' => array(
+      $module_path . '/takeover.css' => array(),
+    ),
     'dependencies' => array(
       array('system', 'jquery.cookie'),
     ),

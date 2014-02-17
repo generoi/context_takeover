@@ -22,9 +22,18 @@
   Drupal.takeover.init = function (settings) {
     $('body').addClass('takeover-open');
     if (!window.matchMedia || (window.matchMedia && window.matchMedia('(min-width: 1024px)').matches)) {
-      $.colorbox({ html: settings.content });
-      $(document).bind('cbox_closed', function() {
-        $('body').removeClass('takeover-open');
+      $.colorbox({
+        html: settings.content,
+        initialWidth: 0,
+        initialHeight: 0,
+        fixed: true,
+        onComplete: function() {
+          // Trigger a resize as there might be responsive images.
+          $.colorbox.resize();
+        },
+        onClosed: function() {
+          $('body').removeClass('takeover-open');
+        }
       });
       $.cookie('takeover', settings.id, { expires: settings.expires, path: '/' });
     }
