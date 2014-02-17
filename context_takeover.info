@@ -1,5 +1,6 @@
 name = Context Takeover
 description = Adds a configurable takeover banner
+dependencies[] = colorbox
 dependencies[] = context
 package = custom
 core = 7.x
