@@ -2,7 +2,6 @@
   Drupal.behaviors.takeover = {
     attach: function (context, settings) {
       settings = settings.takeover || Drupal.settings.takeover;
-      console.log(settings);
       if (this.processed) return;
       if (!settings) return;
       if (!settings.burst && !Drupal.takeover.isApplicable(settings.id)) return;
