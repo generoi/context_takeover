@@ -21,7 +21,7 @@
   Drupal.takeover.init = function (settings) {
     $('body').addClass('takeover-open');
     if (!window.matchMedia || (window.matchMedia && window.matchMedia('(min-width: 1024px)').matches)) {
-      $.colorbox({
+      $.colorbox($.extend({}, Drupal.settings.colorbox || {}, {
         html: settings.content,
         initialWidth: 0,
         initialHeight: 0,
@@ -33,7 +33,7 @@
         onClosed: function() {
           $('body').removeClass('takeover-open');
         }
-      });
+      }));
       $.cookie('takeover', settings.id, { expires: settings.expires, path: '/' });
     }
   };
