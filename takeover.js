@@ -7,6 +7,7 @@
       if (!settings.burst && !Drupal.takeover.isApplicable(settings.id)) return;
       this.processed = true;
 
+      console.debug('initalizing context takeover overlay.');
       Drupal.takeover.init(settings);
     }
   };
@@ -14,8 +15,11 @@
   Drupal.takeover = Drupal.takeover || {};
 
   Drupal.takeover.isApplicable = function (id) {
-    var user_id = $.cookie('takeover');
-    return user_id !== id;
+    var user_id = $.cookie('takeover')
+      , value = user_id !== id;
+
+    console.debug('context takeover displayed before: %s', value ? 'true' : 'false');
+    return value;
   };
 
   Drupal.takeover.init = function (settings) {
@@ -26,15 +30,21 @@
         initialWidth: 0,
         initialHeight: 0,
         fixed: true,
+        onLoad: function() {
+          console.debug('context takeover overlay loading.');
+        },
         onComplete: function() {
           // Trigger a resize as there might be responsive images.
           $.colorbox.resize();
         },
         onClosed: function() {
+          console.debug('context takeover overlay closed.');
           $('body').removeClass('takeover-open');
         }
       }));
       $.cookie('takeover', settings.id, { expires: settings.expires, path: '/' });
+    } else {
+      console.debug('did not load context takeover layover as screen was too small.');
     }
   };
 }(jQuery));
