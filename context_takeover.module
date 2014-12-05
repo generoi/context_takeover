@@ -67,6 +67,7 @@ function context_takeover_library() {
       $module_path . '/takeover.css' => array(),
     ),
     'dependencies' => array(
+      array('colorbox', 'colorbox'),
       array('system', 'jquery.cookie'),
     ),
   );
@@ -74,7 +75,13 @@ function context_takeover_library() {
 }
 
 function context_takeover($content, $id) {
-  drupal_add_library('context_takeover', 'takeover');
+  // @TODO the library is not loaded for whatever reason.
+  // drupal_add_library('context_takeover', 'takeover');
+  $module_path = drupal_get_path('module', 'context_takeover');
+  drupal_add_library('system', 'jquery.cookie');
+  drupal_add_library('colorbox', 'colorbox');
+  drupal_add_js($module_path . '/takeover.js');
+  drupal_add_css($module_path . '/takeover.css');
   drupal_add_js(array(
     'takeover' => array(
       'content' => t($content),
