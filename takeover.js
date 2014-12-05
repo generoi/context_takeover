@@ -34,8 +34,12 @@
           console.debug('context takeover overlay loading.');
         },
         onComplete: function() {
-          // Trigger a resize as there might be responsive images.
-          $.colorbox.resize();
+          console.debug('context takeover overlay loaded.');
+          if (!this.onCompleteDone) {
+            this.onCompleteDone = true;
+            // Trigger a resize as there might be responsive images.
+            $.colorbox.load();
+          }
         },
         onClosed: function() {
           console.debug('context takeover overlay closed.');
