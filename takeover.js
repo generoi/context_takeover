@@ -18,7 +18,7 @@
   Drupal.takeover = Drupal.takeover || {};
 
   Drupal.takeover.isApplicable = function (id) {
-    var user_id = $.cookie('takeover')
+    var user_id = $.cookie('takeover_' + id)
       , value = user_id !== id;
 
     if (!value) console.debug('takeover overlay: not applicable');
@@ -50,7 +50,7 @@
           $('body').removeClass('takeover-open');
         }
       }));
-      $.cookie('takeover', settings.id, { expires: ~~settings.expires || 0, path: '/' });
+      $.cookie('takeover_' + settings.id, settings.id, { expires: ~~settings.expires || 0, path: '/' });
     } else {
       console.debug('takeover overlay: screen too small.');
     }
