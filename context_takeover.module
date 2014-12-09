@@ -74,7 +74,8 @@ function context_takeover_library() {
   return $libraries;
 }
 
-function context_takeover($content, $id) {
+function context_takeover($content, $options) {
+  $options += array('content' => t($content), 'burst' => FALSE);
   // @TODO the library is not loaded for whatever reason.
   // drupal_add_library('context_takeover', 'takeover');
   $module_path = drupal_get_path('module', 'context_takeover');
@@ -83,10 +84,6 @@ function context_takeover($content, $id) {
   drupal_add_js($module_path . '/takeover.js');
   drupal_add_css($module_path . '/takeover.css');
   drupal_add_js(array(
-    'takeover' => array(
-      'content' => t($content),
-      'id' => $id,
-      'burst' => FALSE,
-    ),
+    'takeover' => $options,
   ), 'setting');
 }

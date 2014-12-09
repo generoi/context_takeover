@@ -7,8 +7,11 @@
       if (!settings.burst && !Drupal.takeover.isApplicable(settings.id)) return;
       this.processed = true;
 
-      console.debug('initalizing context takeover overlay.');
-      Drupal.takeover.init(settings);
+      console.debug('takeover overlay: open in %s sec', settings.delay);
+
+      setTimeout(function() {
+        Drupal.takeover.init(settings);
+      }, (~~settings.delay || 0) * 1000);
     }
   };
 
@@ -18,11 +21,12 @@
     var user_id = $.cookie('takeover')
       , value = user_id !== id;
 
-    console.debug('context takeover displayed before: %s', value ? 'true' : 'false');
+    if (!value) console.debug('takeover overlay: not applicable');
     return value;
   };
 
   Drupal.takeover.init = function (settings) {
+    console.debug('takeover overlay: initializing.', settings);
     $('body').addClass('takeover-open');
     if (!window.matchMedia || (window.matchMedia && window.matchMedia('(min-width: 1024px)').matches)) {
       $.colorbox($.extend({}, Drupal.settings.colorbox || {}, {
@@ -31,10 +35,10 @@
         initialHeight: 0,
         fixed: true,
         onLoad: function() {
-          console.debug('context takeover overlay loading.');
+          console.debug('takeover overlay: loading');
         },
         onComplete: function() {
-          console.debug('context takeover overlay loaded.');
+          console.debug('takeover overlay: loaded');
           if (!this.onCompleteDone) {
             this.onCompleteDone = true;
             // Trigger a resize as there might be responsive images.
@@ -42,13 +46,13 @@
           }
         },
         onClosed: function() {
-          console.debug('context takeover overlay closed.');
+          console.debug('takeover overlay: closed');
           $('body').removeClass('takeover-open');
         }
       }));
-      $.cookie('takeover', settings.id, { expires: settings.expires, path: '/' });
+      $.cookie('takeover', settings.id, { expires: ~~settings.expires || 0, path: '/' });
     } else {
-      console.debug('did not load context takeover layover as screen was too small.');
+      console.debug('takeover overlay: screen too small.');
     }
   };
 }(jQuery));

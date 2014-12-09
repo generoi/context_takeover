@@ -22,6 +22,12 @@ class context_takeover_reaction extends context_reaction {
       '#default_value' => isset($values['cookie_expires']) ? $values['cookie_expires'] : 31,
       '#description' => t('Day count before the takeover banner is displayed a second time for the same user.'),
     );
+    $form['delay'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Takeover delay (seconds)'),
+      '#default_value' => isset($values['delay']) ? $values['delay'] : 0,
+      '#description' => t('Seconds to wait until the takover is displayed to the user.'),
+    );
     return $form;
   }
 
@@ -31,7 +37,11 @@ class context_takeover_reaction extends context_reaction {
       if (!empty($context->reactions[$this->plugin])) {
         $values = $context->reactions[$this->plugin];
         if ($content = $values['content']['value']) {
-          context_takeover($content, $values['id']);
+          context_takeover($content, array(
+            'id' => $values['id'],
+            'expires' => $values['cookie_expires'],
+            'delay' => $values['delay'],
+          ));
         }
       }
     }
