@@ -28,6 +28,15 @@ class context_takeover_reaction extends context_reaction {
       '#default_value' => isset($values['delay']) ? $values['delay'] : 0,
       '#description' => t('Seconds to wait until the takover is displayed to the user.'),
     );
+    $form['overlay_type'] = array(
+      '#type' => 'select',
+      '#title' => t('Takeover type'),
+      '#default_value' => isset($values['overlay_type']) ? $values['overlay_type'] : 'overlay',
+      '#options' => array(
+        'overlay' => t('Overlay'),
+        'footer' => t('Footer'),
+      ),
+    );
     return $form;
   }
 
@@ -41,6 +50,7 @@ class context_takeover_reaction extends context_reaction {
             'id' => $values['id'],
             'expires' => $values['cookie_expires'],
             'delay' => $values['delay'],
+            'overlay_type' => isset($values['overlay_type']) ? $values['overlay_type'] : 'overlay',
           ));
         }
       }
