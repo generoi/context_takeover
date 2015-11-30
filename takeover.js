@@ -64,7 +64,7 @@
         if (!this.onCompleteDone) {
           this.onCompleteDone = true;
           // Trigger a resize as there might be responsive images.
-          $.colorbox.load();
+          $.colorbox.resize();
         }
       },
       onClosed: function() {
